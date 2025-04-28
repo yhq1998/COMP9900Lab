@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # 前端服务
+  frontend:
+    build:
+      context: ./comp9900-vue
+      dockerfile: Dockerfile
+    container_name: comp9900-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: always
+    volumes:
+      - ./comp9900-vue/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./logs/nginx:/var/log/nginx
+
+  # 后端服务
+  backend:
+    build:
+      context: ./comp9900-management-module01
+      dockerfile: Dockerfile
+    container_name: comp9900-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/my_app_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin123
+    depends_on:
+      - db
+    networks:
+      - app-network
+    restart: always
+    volumes:
+      - ./logs/spring:/app/logs
+
+  # 数据库服务
+  db:
+    image: postgis/postgis:15-3.4
+    container_name: comp9900-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=my_app_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin123
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data: 

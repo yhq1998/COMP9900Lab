@@ -1,0 +1,6 @@
+com/unsw/SpringBootApplication.class
+com/unsw/pojo/SystemLog.class
+com/unsw/aspect/LogAspect.class
+com/unsw/mapper/SystemLogMapper.class
+com/unsw/Comp9900ManagementModule01Application.class
+com/unsw/config/CorsConfig.class

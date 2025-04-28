@@ -1,0 +1,27 @@
+# 通用
+.git
+.gitignore
+.github
+.vscode
+.idea
+*.md
+!README.md
+
+# 前端
+comp9900-vue/node_modules/
+comp9900-vue/dist/
+comp9900-vue/coverage/
+comp9900-vue/.DS_Store
+comp9900-vue/.env.local
+comp9900-vue/.env.development.local
+comp9900-vue/.env.test.local
+comp9900-vue/.env.production.local
+comp9900-vue/npm-debug.log*
+comp9900-vue/yarn-debug.log*
+comp9900-vue/yarn-error.log*
+
+# 后端
+comp9900-management-module01/target/
+comp9900-management-module01/mvn_output.log
+comp9900-management-module01/.DS_Store
+comp9900-management-module01/*.iml 

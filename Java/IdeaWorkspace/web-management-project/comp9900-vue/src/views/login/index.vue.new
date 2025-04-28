@@ -1,0 +1,163 @@
+<template>
+  <div class="login-container">
+    <div class="login-box">
+      <div class="login-header">
+        <h2 class="login-title">MiniBus Management System</h2>
+        <p class="login-subtitle">请登录您的账号</p>
+      </div>
+      
+      <el-form
+        ref="loginFormRef"
+        :model="loginForm"
+        :rules="loginRules"
+        class="login-form"
+        @keyup.enter="handleLogin"
+      >
+        <el-form-item prop="username">
+          <el-input
+            v-model="loginForm.username"
+            placeholder="用户名"
+            prefix-icon="User"
+            clearable
+          />
+        </el-form-item>
+        
+        <el-form-item prop="password">
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            placeholder="密码"
+            prefix-icon="Lock"
+            show-password
+            clearable
+          />
+        </el-form-item>
+        
+        <el-form-item class="login-btn-container">
+          <el-button
+            type="primary"
+            :loading="loading"
+            class="login-button"
+            @click="handleLogin"
+          >
+            登录
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, reactive } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { ElMessage } from 'element-plus'
+
+// 表单引用
+const loginFormRef = ref(null)
+
+// 加载状态
+const loading = ref(false)
+
+// 登录表单数据
+const loginForm = reactive({
+  username: '',
+  password: ''
+})
+
+// 表单验证规则
+const loginRules = {
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 3, max: 20, message: '用户名长度应为3-20个字符', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '密码长度应为6-20个字符', trigger: 'blur' }
+  ]
+}
+
+// 获取用户状态管理
+const userStore = useUserStore()
+
+// 登录方法
+const handleLogin = () => {
+  // 表单验证
+  loginFormRef.value.validate(async (valid) => {
+    if (!valid) return
+    
+    try {
+      // 设置加载状态
+      loading.value = true
+      
+      // 调用登录接口
+      const success = await userStore.login(loginForm)
+      
+      if (!success) {
+        ElMessage.error('Login failed, please check your username and password')
+      }
+    } catch (error) {
+      console.error('Login exception:', error)
+      ElMessage.error('Login exception, please try again later')
+    } finally {
+      loading.value = false
+    }
+  })
+}
+</script>
+
+<style scoped>
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-box {
+  width: 400px;
+  padding: 40px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: #666;
+}
+
+.login-form {
+  margin-top: 20px;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 16px;
+}
+
+.login-btn-container {
+  margin-top: 30px;
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .login-box {
+    width: 90%;
+    padding: 30px 20px;
+  }
+}
+</style>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unsw.mapper.OrdersMapper">
+  <resultMap id="BaseResultMap" type="com.unsw.pojo.Orders">
+    <!--@mbg.generated-->
+    <!--@Table orders-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="driver_id" jdbcType="INTEGER" property="driverId" />
+    <result column="vehicle_id" jdbcType="INTEGER" property="vehicleId" />
+    <result column="order_type" jdbcType="OTHER" property="orderType" />
+    <result column="start_location" jdbcType="VARCHAR" property="startLocation" />
+    <result column="end_location" jdbcType="VARCHAR" property="endLocation" />
+    <result column="estimated_time" jdbcType="INTEGER" property="estimatedTime" />
+    <result column="fare" jdbcType="NUMERIC" property="fare" />
+    <result column="passenger_count" jdbcType="INTEGER" property="passengerCount" />
+    <result column="luggage_info" jdbcType="VARCHAR" property="luggageInfo" />
+    <result column="status" jdbcType="OTHER" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, order_number, user_id, driver_id, vehicle_id, order_type, start_location, end_location, 
+    estimated_time, fare, passenger_count, luggage_info, "status", created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from orders
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from orders
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.unsw.pojo.Orders">
+    <!--@mbg.generated-->
+    insert into orders (id, order_number, user_id, 
+      driver_id, vehicle_id, order_type, 
+      start_location, end_location, estimated_time, 
+      fare, passenger_count, luggage_info, 
+      "status", created_at, updated_at
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderNumber,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
+      #{driverId,jdbcType=INTEGER}, #{vehicleId,jdbcType=INTEGER}, #{orderType,jdbcType=OTHER}, 
+      #{startLocation,jdbcType=VARCHAR}, #{endLocation,jdbcType=VARCHAR}, #{estimatedTime,jdbcType=INTEGER}, 
+      #{fare,jdbcType=NUMERIC}, #{passengerCount,jdbcType=INTEGER}, #{luggageInfo,jdbcType=VARCHAR}, 
+      #{status,jdbcType=OTHER}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.unsw.pojo.Orders">
+    <!--@mbg.generated-->
+    insert into orders
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderNumber != null">
+        order_number,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="driverId != null">
+        driver_id,
+      </if>
+      <if test="vehicleId != null">
+        vehicle_id,
+      </if>
+      <if test="orderType != null">
+        order_type,
+      </if>
+      <if test="startLocation != null">
+        start_location,
+      </if>
+      <if test="endLocation != null">
+        end_location,
+      </if>
+      <if test="estimatedTime != null">
+        estimated_time,
+      </if>
+      <if test="fare != null">
+        fare,
+      </if>
+      <if test="passengerCount != null">
+        passenger_count,
+      </if>
+      <if test="luggageInfo != null">
+        luggage_info,
+      </if>
+      <if test="status != null">
+        "status",
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderNumber != null">
+        #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="driverId != null">
+        #{driverId,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleId != null">
+        #{vehicleId,jdbcType=INTEGER},
+      </if>
+      <if test="orderType != null">
+        #{orderType,jdbcType=OTHER},
+      </if>
+      <if test="startLocation != null">
+        #{startLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="endLocation != null">
+        #{endLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="estimatedTime != null">
+        #{estimatedTime,jdbcType=INTEGER},
+      </if>
+      <if test="fare != null">
+        #{fare,jdbcType=NUMERIC},
+      </if>
+      <if test="passengerCount != null">
+        #{passengerCount,jdbcType=INTEGER},
+      </if>
+      <if test="luggageInfo != null">
+        #{luggageInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=OTHER},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.unsw.pojo.Orders">
+    <!--@mbg.generated-->
+    update orders
+    <set>
+      <if test="orderNumber != null">
+        order_number = #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="driverId != null">
+        driver_id = #{driverId,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleId != null">
+        vehicle_id = #{vehicleId,jdbcType=INTEGER},
+      </if>
+      <if test="orderType != null">
+        order_type = #{orderType,jdbcType=OTHER},
+      </if>
+      <if test="startLocation != null">
+        start_location = #{startLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="endLocation != null">
+        end_location = #{endLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="estimatedTime != null">
+        estimated_time = #{estimatedTime,jdbcType=INTEGER},
+      </if>
+      <if test="fare != null">
+        fare = #{fare,jdbcType=NUMERIC},
+      </if>
+      <if test="passengerCount != null">
+        passenger_count = #{passengerCount,jdbcType=INTEGER},
+      </if>
+      <if test="luggageInfo != null">
+        luggage_info = #{luggageInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        "status" = #{status,jdbcType=OTHER},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.unsw.pojo.Orders">
+    <!--@mbg.generated-->
+    update orders
+    set order_number = #{orderNumber,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      driver_id = #{driverId,jdbcType=INTEGER},
+      vehicle_id = #{vehicleId,jdbcType=INTEGER},
+      order_type = #{orderType,jdbcType=OTHER},
+      start_location = #{startLocation,jdbcType=VARCHAR},
+      end_location = #{endLocation,jdbcType=VARCHAR},
+      estimated_time = #{estimatedTime,jdbcType=INTEGER},
+      fare = #{fare,jdbcType=NUMERIC},
+      passenger_count = #{passengerCount,jdbcType=INTEGER},
+      luggage_info = #{luggageInfo,jdbcType=VARCHAR},
+      "status" = #{status,jdbcType=OTHER},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

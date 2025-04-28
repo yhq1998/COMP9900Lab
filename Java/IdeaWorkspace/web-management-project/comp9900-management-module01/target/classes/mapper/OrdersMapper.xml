@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unsw.mapper.OrdersMapper">
+    <resultMap id="BaseResultMap" type="com.unsw.pojo.Orders">
+        <id column="id" property="id" />
+        <result column="order_number" property="orderNumber" />
+        <result column="user_id" property="userId" />
+        <result column="driver_id" property="driverId" />
+        <result column="vehicle_id" property="vehicleId" />
+        <result column="order_type" property="orderType" />
+        <result column="start_location" property="startLocation" />
+        <result column="end_location" property="endLocation" />
+        <result column="estimated_time" property="estimatedTime" />
+        <result column="fare" property="fare" />
+        <result column="passenger_count" property="passengerCount" />
+        <result column="luggage_info" property="luggageInfo" />
+        <result column="status" property="status" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, order_number, user_id, driver_id, vehicle_id, order_type, start_location, end_location, 
+        estimated_time, fare, passenger_count, luggage_info, status, created_at, updated_at
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT <include refid="Base_Column_List" /> FROM orders WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM orders
+    </select>
+
+    <!-- 以下是额外的查询方法，如果OrdersMapper接口中没有定义这些方法，可以根据需要添加 -->
+    <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT <include refid="Base_Column_List" /> FROM orders WHERE user_id = #{userId}
+    </select>
+
+    <select id="findByDriverId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT <include refid="Base_Column_List" /> FROM orders WHERE driver_id = #{driverId}
+    </select>
+
+    <select id="findByStatus" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT <include refid="Base_Column_List" /> FROM orders WHERE status = #{status}
+    </select>
+
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT <include refid="Base_Column_List" /> FROM orders
+        <where>
+            <if test="orderNo != null and orderNo != ''">
+                AND order_number LIKE CONCAT('%', #{orderNo}, '%')
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="driverId != null">
+                AND driver_id = #{driverId}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="orderType != null and orderType != ''">
+                AND order_type = #{orderType}
+            </if>
+            <if test="startDate != null and startDate != ''">
+                AND created_at >= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND created_at &lt;= #{endDate}
+            </if>
+        </where>
+        ORDER BY created_at DESC
+        <if test="offset != null and limit != null">
+            LIMIT #{offset}, #{limit}
+        </if>
+    </select>
+    
+    <select id="countByParams" resultType="java.lang.Integer" parameterType="java.util.Map">
+        SELECT COUNT(*) FROM orders
+        <where>
+            <if test="orderNo != null and orderNo != ''">
+                AND order_number LIKE CONCAT('%', #{orderNo}, '%')
+            </if>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="driverId != null">
+                AND driver_id = #{driverId}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="orderType != null and orderType != ''">
+                AND order_type = #{orderType}
+            </if>
+            <if test="startDate != null and startDate != ''">
+                AND created_at >= #{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                AND created_at &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.unsw.pojo.Orders" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO orders (
+            order_number, user_id, driver_id, vehicle_id, order_type, start_location, end_location, 
+            estimated_time, fare, passenger_count, luggage_info, status, created_at, updated_at
+        ) VALUES (
+            #{orderNumber}, #{userId}, #{driverId}, #{vehicleId}, #{orderType}, #{startLocation}, #{endLocation}, 
+            #{estimatedTime}, #{fare}, #{passengerCount}, #{luggageInfo}, #{status}, #{createdAt}, #{updatedAt}
+        )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.unsw.pojo.Orders" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNumber != null">order_number,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="driverId != null">driver_id,</if>
+            <if test="vehicleId != null">vehicle_id,</if>
+            <if test="orderType != null">order_type,</if>
+            <if test="startLocation != null">start_location,</if>
+            <if test="endLocation != null">end_location,</if>
+            <if test="estimatedTime != null">estimated_time,</if>
+            <if test="fare != null">fare,</if>
+            <if test="passengerCount != null">passenger_count,</if>
+            <if test="luggageInfo != null">luggage_info,</if>
+            <if test="status != null">status,</if>
+            <if test="createdAt != null">created_at,</if>
+            <if test="updatedAt != null">updated_at,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNumber != null">#{orderNumber},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="driverId != null">#{driverId},</if>
+            <if test="vehicleId != null">#{vehicleId},</if>
+            <if test="orderType != null">#{orderType},</if>
+            <if test="startLocation != null">#{startLocation},</if>
+            <if test="endLocation != null">#{endLocation},</if>
+            <if test="estimatedTime != null">#{estimatedTime},</if>
+            <if test="fare != null">#{fare},</if>
+            <if test="passengerCount != null">#{passengerCount},</if>
+            <if test="luggageInfo != null">#{luggageInfo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createdAt != null">#{createdAt},</if>
+            <if test="updatedAt != null">#{updatedAt},</if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.unsw.pojo.Orders">
+        UPDATE orders SET
+            order_number = #{orderNumber},
+            user_id = #{userId},
+            driver_id = #{driverId},
+            vehicle_id = #{vehicleId},
+            order_type = #{orderType},
+            start_location = #{startLocation},
+            end_location = #{endLocation},
+            estimated_time = #{estimatedTime},
+            fare = #{fare},
+            passenger_count = #{passengerCount},
+            luggage_info = #{luggageInfo},
+            status = CAST(#{status} AS order_status),
+            created_at = #{createdAt},
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.unsw.pojo.Orders">
+        UPDATE orders
+        <set>
+            <if test="orderNumber != null">order_number = #{orderNumber},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="driverId != null">driver_id = #{driverId},</if>
+            <if test="vehicleId != null">vehicle_id = #{vehicleId},</if>
+            <if test="orderType != null">order_type = #{orderType},</if>
+            <if test="startLocation != null">start_location = #{startLocation},</if>
+            <if test="endLocation != null">end_location = #{endLocation},</if>
+            <if test="estimatedTime != null">estimated_time = #{estimatedTime},</if>
+            <if test="fare != null">fare = #{fare},</if>
+            <if test="passengerCount != null">passenger_count = #{passengerCount},</if>
+            <if test="luggageInfo != null">luggage_info = #{luggageInfo},</if>
+            <if test="status != null">status = CAST(#{status} AS order_status),</if>
+            <if test="createdAt != null">created_at = #{createdAt},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        DELETE FROM orders WHERE id = #{id}
+    </delete>
+</mapper>

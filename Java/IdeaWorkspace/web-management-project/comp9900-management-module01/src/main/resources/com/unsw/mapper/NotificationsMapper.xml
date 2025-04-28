@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unsw.mapper.NotificationsMapper">
+  <resultMap id="BaseResultMap" type="com.unsw.pojo.Notifications">
+    <!--@mbg.generated-->
+    <!--@Table notifications-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="recipient_id" jdbcType="INTEGER" property="recipientId" />
+    <result column="notification_type" jdbcType="VARCHAR" property="notificationType" />
+    <result column="is_read" jdbcType="BOOLEAN" property="isRead" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, title, message, recipient_id, notification_type, is_read, created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from notifications
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from notifications
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.unsw.pojo.Notifications">
+    <!--@mbg.generated-->
+    insert into notifications (id, title, message, 
+      recipient_id, notification_type, is_read, 
+      created_at, updated_at)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, 
+      #{recipientId,jdbcType=INTEGER}, #{notificationType,jdbcType=VARCHAR}, #{isRead,jdbcType=BOOLEAN}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.unsw.pojo.Notifications">
+    <!--@mbg.generated-->
+    insert into notifications
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+      <if test="recipientId != null">
+        recipient_id,
+      </if>
+      <if test="notificationType != null">
+        notification_type,
+      </if>
+      <if test="isRead != null">
+        is_read,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="recipientId != null">
+        #{recipientId,jdbcType=INTEGER},
+      </if>
+      <if test="notificationType != null">
+        #{notificationType,jdbcType=VARCHAR},
+      </if>
+      <if test="isRead != null">
+        #{isRead,jdbcType=BOOLEAN},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.unsw.pojo.Notifications">
+    <!--@mbg.generated-->
+    update notifications
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="recipientId != null">
+        recipient_id = #{recipientId,jdbcType=INTEGER},
+      </if>
+      <if test="notificationType != null">
+        notification_type = #{notificationType,jdbcType=VARCHAR},
+      </if>
+      <if test="isRead != null">
+        is_read = #{isRead,jdbcType=BOOLEAN},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.unsw.pojo.Notifications">
+    <!--@mbg.generated-->
+    update notifications
+    set title = #{title,jdbcType=VARCHAR},
+      message = #{message,jdbcType=VARCHAR},
+      recipient_id = #{recipientId,jdbcType=INTEGER},
+      notification_type = #{notificationType,jdbcType=VARCHAR},
+      is_read = #{isRead,jdbcType=BOOLEAN},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

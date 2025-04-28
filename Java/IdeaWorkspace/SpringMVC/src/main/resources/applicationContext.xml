@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--    1.导入spring的坐标spring-context之后，才能创建该spring的xml文件，对应版本是5.0.8-->
+<!--    2.配置bean-->
+<!--        2.1 bean标签表示配置bean-->
+<!--        2.2 id属性表示给bean起名字-->
+<!--        2.3 class标签表示给bean定义类型-->
+<bean id="BookDao" class="com.yusys.dao.impl.BookDaoImpl"></bean>
+<bean id="BookService" class="com.yusys.service.impl.BookServiceImpl">
+<!--    1.property配置BookService的属性-->
+<!--    2.name配置属性名-->
+<!--    3.ref配置该属性在applicationContext中的位置-->
+    <property name="bookDaoImpl" ref="BookDao"/>
+</bean>
+
+    <bean id="userService" class="com.yusys.factory.UserFactory" factory-method="userService"/>
+
+<!--    <bean id="adminFactory" class="com.yusys.factory.AdminFactory"/>-->
+<!--    <bean id="adminService" factory-method="creatAdminServiceImpl" factory-bean="adminFactory"/>-->
+
+    <bean id="adminService" class="com.yusys.factory.AdminFactoryBean"/>
+
+</beans>

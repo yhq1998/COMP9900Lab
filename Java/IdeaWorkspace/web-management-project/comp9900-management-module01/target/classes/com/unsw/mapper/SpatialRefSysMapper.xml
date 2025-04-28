@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unsw.mapper.SpatialRefSysMapper">
+  <resultMap id="BaseResultMap" type="com.unsw.pojo.SpatialRefSys">
+    <!--@mbg.generated-->
+    <!--@Table spatial_ref_sys-->
+    <id column="srid" jdbcType="INTEGER" property="srid" />
+    <result column="auth_name" jdbcType="VARCHAR" property="authName" />
+    <result column="auth_srid" jdbcType="INTEGER" property="authSrid" />
+    <result column="srtext" jdbcType="VARCHAR" property="srtext" />
+    <result column="proj4text" jdbcType="VARCHAR" property="proj4text" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    srid, auth_name, auth_srid, srtext, proj4text
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from spatial_ref_sys
+    where srid = #{srid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from spatial_ref_sys
+    where srid = #{srid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.unsw.pojo.SpatialRefSys">
+    <!--@mbg.generated-->
+    insert into spatial_ref_sys (srid, auth_name, auth_srid, 
+      srtext, proj4text)
+    values (#{srid,jdbcType=INTEGER}, #{authName,jdbcType=VARCHAR}, #{authSrid,jdbcType=INTEGER}, 
+      #{srtext,jdbcType=VARCHAR}, #{proj4text,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.unsw.pojo.SpatialRefSys">
+    <!--@mbg.generated-->
+    insert into spatial_ref_sys
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="srid != null">
+        srid,
+      </if>
+      <if test="authName != null">
+        auth_name,
+      </if>
+      <if test="authSrid != null">
+        auth_srid,
+      </if>
+      <if test="srtext != null">
+        srtext,
+      </if>
+      <if test="proj4text != null">
+        proj4text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="srid != null">
+        #{srid,jdbcType=INTEGER},
+      </if>
+      <if test="authName != null">
+        #{authName,jdbcType=VARCHAR},
+      </if>
+      <if test="authSrid != null">
+        #{authSrid,jdbcType=INTEGER},
+      </if>
+      <if test="srtext != null">
+        #{srtext,jdbcType=VARCHAR},
+      </if>
+      <if test="proj4text != null">
+        #{proj4text,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.unsw.pojo.SpatialRefSys">
+    <!--@mbg.generated-->
+    update spatial_ref_sys
+    <set>
+      <if test="authName != null">
+        auth_name = #{authName,jdbcType=VARCHAR},
+      </if>
+      <if test="authSrid != null">
+        auth_srid = #{authSrid,jdbcType=INTEGER},
+      </if>
+      <if test="srtext != null">
+        srtext = #{srtext,jdbcType=VARCHAR},
+      </if>
+      <if test="proj4text != null">
+        proj4text = #{proj4text,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where srid = #{srid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.unsw.pojo.SpatialRefSys">
+    <!--@mbg.generated-->
+    update spatial_ref_sys
+    set auth_name = #{authName,jdbcType=VARCHAR},
+      auth_srid = #{authSrid,jdbcType=INTEGER},
+      srtext = #{srtext,jdbcType=VARCHAR},
+      proj4text = #{proj4text,jdbcType=VARCHAR}
+    where srid = #{srid,jdbcType=INTEGER}
+  </update>
+</mapper>

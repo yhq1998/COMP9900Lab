@@ -1,0 +1,36 @@
+# 项目名称
+spring:
+  application:
+    name: comp9900-management-module01
+
+#  配置数据库连接信息
+  datasource:
+    url: jdbc:postgresql://localhost:5432/my_app_db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: admin123
+#  datasource:
+#    url: jdbc:postgresql://172.20.10.3:5432/my_app_db
+#    driver-class-name: org.postgresql.Driver
+#    username: xinyu_du
+#    password: 123456
+  jwt:
+    secret: VGhpczI1NkJpdFNlY3JldEtleUZvckpXVDEyMzQ1NkBA
+    expiration: 86400000
+
+#  配置mybatis
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+
+# 配置连接池
+datasource:
+  hikari:
+    maximum-pool-size: 10
+    minimum-idle: 2
+    idle-timeout: 30000
+    max-lifetime: 1800000
+    connection-timeout: 30000
+    connection-test-query: SELECT 1

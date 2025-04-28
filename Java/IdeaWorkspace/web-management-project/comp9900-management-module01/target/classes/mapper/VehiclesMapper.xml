@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unsw.mapper.VehiclesMapper">
+    <resultMap id="BaseResultMap" type="com.unsw.pojo.Vehicles">
+        <id column="id" property="id" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="plate_number" property="plateNumber" jdbcType="VARCHAR" />
+        <!-- Assuming gpsLocation in POJO is String WKT like 'POINT(lon lat)' or handled by TypeHandler -->
+        <!-- For reading, PostGIS might return WKT string or binary, adjust property type/TypeHandler if needed -->
+        <result column="gps_location" property="gpsLocation" jdbcType="OTHER" /> 
+        <result column="available" property="available" jdbcType="BOOLEAN" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, type, plate_number, ST_AsText(gps_location) as gps_location, available, created_at
+    </sql>
+    
+    <sql id="Insert_Column_List">
+        type, plate_number, gps_location, available
+        <!-- created_at has default value -->
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT <include refid="Base_Column_List" /> FROM vehicles WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM vehicles
+    </select>
+
+    <select id="findByDriverId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT <include refid="Base_Column_List" /> FROM vehicles WHERE driver_id = #{driverId}
+    </select>
+
+    <insert id="insert" parameterType="com.unsw.pojo.Vehicles" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO vehicles (
+            <include refid="Insert_Column_List" />
+        ) VALUES (
+            #{type, jdbcType=VARCHAR}::vehicle_type, 
+            #{plateNumber, jdbcType=VARCHAR}, 
+            <choose>
+                <when test="gpsLocation != null and gpsLocation != ''">
+                    ST_GeogFromText(#{gpsLocation, jdbcType=VARCHAR}),
+                </when>
+                <otherwise>
+                    NULL,
+                </otherwise>
+            </choose>
+            #{available, jdbcType=BOOLEAN}
+        )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.unsw.pojo.Vehicles" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO vehicles
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="plateNumber != null">plate_number,</if>
+            <if test="gpsLocation != null">gps_location,</if>
+            <if test="available != null">available,</if>
+            <!-- createdAt has default value, usually not inserted selectively -->
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type, jdbcType=VARCHAR}::vehicle_type,</if>
+            <if test="plateNumber != null">#{plateNumber, jdbcType=VARCHAR},</if>
+            <if test="gpsLocation != null">
+                 <choose>
+                    <when test="gpsLocation != ''">
+                        ST_GeogFromText(#{gpsLocation, jdbcType=VARCHAR}),
+                    </when>
+                    <otherwise>
+                        NULL,
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="available != null">#{available, jdbcType=BOOLEAN},</if>
+            <!-- createdAt has default value -->
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.unsw.pojo.Vehicles">
+        UPDATE vehicles SET
+            type = #{type, jdbcType=VARCHAR}::vehicle_type,
+            plate_number = #{plateNumber, jdbcType=VARCHAR},
+            gps_location = 
+                <choose>
+                    <when test="gpsLocation != null and gpsLocation != ''">
+                        ST_GeogFromText(#{gpsLocation, jdbcType=VARCHAR}),
+                    </when>
+                    <otherwise>
+                        NULL,
+                    </otherwise>
+                </choose>,
+            available = #{available, jdbcType=BOOLEAN}
+            <!-- created_at should generally not be updated manually -->
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.unsw.pojo.Vehicles">
+        UPDATE vehicles
+        <set>
+            <if test="type != null">type = #{type, jdbcType=VARCHAR}::vehicle_type,</if>
+            <if test="plateNumber != null">plate_number = #{plateNumber, jdbcType=VARCHAR},</if>
+            <if test="gpsLocation != null">
+                gps_location = 
+                    <choose>
+                        <when test="gpsLocation != ''">
+                            ST_GeogFromText(#{gpsLocation, jdbcType=VARCHAR}),
+                        </when>
+                        <otherwise>
+                            NULL,
+                        </otherwise>
+                    </choose>,
+            </if>
+            <if test="available != null">available = #{available, jdbcType=BOOLEAN},</if>
+            <!-- created_at should generally not be updated manually -->
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        DELETE FROM vehicles WHERE id = #{id}
+    </delete>
+</mapper>

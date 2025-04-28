@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unsw.mapper.SystemLogMapper">
+    <resultMap id="BaseResultMap" type="com.unsw.pojo.SystemLog">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="operation" property="operation" />
+        <result column="method" property="method" />
+        <result column="params" property="params" />
+        <result column="ip" property="ip" />
+        <result column="time" property="time" />
+        <result column="exception" property="exception" />
+        <result column="create_time" property="createTime" />
+        <result column="description" property="description" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, username, operation, method, params, ip, time, exception, create_time, description, type
+    </sql>
+
+    <insert id="insert" parameterType="com.unsw.pojo.SystemLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO system_log (
+            username, operation, method, params, ip, time, exception, create_time, description, type
+        ) VALUES (
+            #{username}, #{operation}, #{method}, #{params}, #{ip}, #{time}, #{exception},
+            #{createTime}, #{description}, #{type}
+        )
+    </insert>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM system_log
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="findByType" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM system_log
+        WHERE type = #{type}
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="findByUsername" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM system_log
+        WHERE username = #{username}
+        ORDER BY create_time DESC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM system_log WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByType">
+        DELETE FROM system_log WHERE type = #{type}
+    </delete>
+</mapper>
